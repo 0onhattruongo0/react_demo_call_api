@@ -1,22 +1,30 @@
+import { Component } from "react";
+import { Link } from "react-router-dom";
 
 
 
-function ProductItem() {
+class ProductItem extends Component {
+  render(){
+    var {index,product} = this.props;
+  var status = product.status? "Còn Hàng" : "Hết Hàng";
+  var classStatus = product.status? "label label-warning" : "label label-danger";
     return (
         <tr>
-            <td>1</td>
-            <td>123</td>
-            <td>Iphone</td>
-            <td>200</td>
+            <td>{index+1}</td>
+            <td>{product.id}</td>
+            <td>{product.name}</td>
+            <td>{product.price}</td>
             <td>
-            <span class="label label-warning">Còn hàng</span>
+            <span className={classStatus}>{status}</span>
             </td>
             <td>
-            <button type="button" class="btn btn-success">Sửa</button>
-            <button type="button" class="btn btn-danger">Xóa</button>
+            <Link to='/product/:id/edit' className="btn btn-success">Sửa</Link>
+            <button type="button" className="btn btn-danger">Xóa</button>
             </td>
       </tr>
     );
+  }
+  
   }
   
   export default ProductItem;

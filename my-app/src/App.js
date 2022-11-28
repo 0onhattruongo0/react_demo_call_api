@@ -1,39 +1,41 @@
 import './App.css';
 import Menu from './components/Menu/Menu';
 // import ProductList from './components/ProductList/ProductList';
-import routes from './routes';
-import {Outlet, Route, BrowserRouter, Routes} from 'react-router-dom'
+import ProductListPage from './pages/ProductListPage/ProductListPage';
+import {Route, BrowserRouter, Routes} from 'react-router-dom'
+import HomePage from './pages/Home/HomePage';
+import NotFound from './pages/NotFound/NotFound';
+import ProductActionPage from './pages/ProductActionPage/ProductActionPage';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
+
       <div className="App">  
-          <Menu />
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<Menu/>}>
+              <Route index element={<HomePage />} />
+              <Route path='*' element = {<NotFound />} />
+              <Route path='product'element={<ProductListPage />} />
+              <Route path='product/add'element={<ProductActionPage />} />
+              <Route path='product/:id/edit'element={<ProductActionPage />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+          {/* <Menu />
           <div className='container'>    
             <div className="row">
-              {/* <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">          
+              <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">          
                   <button type="button" className="btn btn-info">Thêm sản phẩm</button>
                   <ProductList />
-              </div> */}
-              {this.showContentMenus(routes)}
+              </div>
+            
             </div>
-          </div> 
+          </div>  */}
       </div>
-      </Routes>
-    </BrowserRouter>
+      
   );
   
 }
-showContentMenus = (routes)=>{
-    var result = null;
-    if(routes.length>0){
-      result = routes.map((route,index)=>{
-        return (
-          <Route key={index} path={route.path} element={route.main} />
-        )
-      })
-    }
-    return <Outlet>{result}</Outlet>
-}
+
 export default App;
