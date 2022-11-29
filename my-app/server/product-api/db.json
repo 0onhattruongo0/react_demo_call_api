@@ -1,0 +1,64 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Iphone 6",
+      "price": 500,
+      "status": true
+    },
+    {
+      "id": 2,
+      "name": "Iphone 7",
+      "price": 600,
+      "status": true
+    },
+    {
+      "id": 3,
+      "name": "Iphone 8",
+      "price": 700,
+      "status": false
+    },
+    {
+      "id": 4,
+      "name": "Iphone X",
+      "price": 800,
+      "status": true
+    },
+    {
+      "name": "iphone 3",
+      "price": "200",
+      "status": true,
+      "id": 5
+    },
+    {
+      "name": "ádasdsa",
+      "price": "123123",
+      "status": false,
+      "id": 6
+    },
+    {
+      "name": "adasd",
+      "price": "345345",
+      "status": true,
+      "id": 7
+    },
+    {
+      "name": "",
+      "price": "",
+      "status": false,
+      "id": 8
+    },
+    {
+      "name": "đá",
+      "price": "32423",
+      "status": true,
+      "id": 9
+    },
+    {
+      "name": "fsdfsdf",
+      "price": "234234",
+      "status": true,
+      "id": 10
+    }
+  ]
+}

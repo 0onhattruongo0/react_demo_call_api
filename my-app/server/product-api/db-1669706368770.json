@@ -1,0 +1,28 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Iphone 6",
+      "price": 500,
+      "status": true
+    },
+    {
+      "id": 2,
+      "name": "Iphone 7",
+      "price": 600,
+      "status": true
+    },
+    {
+      "id": 3,
+      "name": "Iphone 8",
+      "price": 700,
+      "status": false
+    },
+    {
+      "id": 4,
+      "name": "Iphone X",
+      "price": 800,
+      "status": true
+    }
+  ]
+}
