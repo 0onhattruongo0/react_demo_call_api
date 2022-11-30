@@ -10,7 +10,7 @@
       "id": 2,
       "name": "Iphone 7",
       "price": 600,
-      "status": true
+      "status": false
     },
     {
       "id": 3,
@@ -29,36 +29,6 @@
       "price": "200",
       "status": true,
       "id": 5
-    },
-    {
-      "name": "iphone14",
-      "price": "700",
-      "status": true,
-      "id": 6
-    },
-    {
-      "name": "qweqwe",
-      "price": "432523424",
-      "status": false,
-      "id": 7
-    },
-    {
-      "id": 8,
-      "name": "ipad",
-      "price": "800",
-      "status": true
-    },
-    {
-      "id": 9,
-      "name": "radsad",
-      "price": "213123",
-      "status": false
-    },
-    {
-      "id": 10,
-      "name": "ưqeadasdad23123",
-      "price": "213123123",
-      "status": true
     }
   ]
 }

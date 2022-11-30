@@ -1,8 +1,8 @@
 import { Component } from "react";
-import callApi from "../../utils/apiCaller";
+// import callApi from "../../utils/apiCaller";
 import { Link, Navigate,useParams   } from 'react-router-dom';
 import {connect} from 'react-redux'
-import { actAddProductRequest } from "../../actions";
+import { actAddProductRequest, actGetProductRequest, actUpdateProductRequest } from "../../actions";
 
 
 
@@ -50,20 +50,24 @@ class ProductActionPage extends Component {
             //         redirect : true
             //     })
             // })
-                this.setState({
-                redirect : true
+            this.setState({
+            redirect : true
             })
             this.props.onAddProduct(product)
         }else{
-            callApi(`products/${id}`,'PUT',{
-                id: id,
-                name: txtName,
-                price: txtPrice,
-                status: chkbStatus
-            }).then(res=>{
-                this.setState({
-                    redirect : true
-                })
+            // callApi(`products/${id}`,'PUT',{
+            //     id: id,
+            //     name: txtName,
+            //     price: txtPrice,
+            //     status: chkbStatus
+            // }).then(res=>{
+            //     this.setState({
+            //         redirect : true
+            //     })
+            // })
+            this.props.onUpdateProduct(product)
+            this.setState({
+                redirect : true
             })
         }
        
@@ -72,21 +76,53 @@ class ProductActionPage extends Component {
     componentDidMount() {
         let { id } = this.props.params;
         if(id){
-            callApi(`products/${id}`,'GET',null).then(res=>{
-                var data = res.data;
-                // console.log(data)
-                this.setState({
-                    id : data.id,
-                    txtName : data.name,
-                    txtPrice:data.price,
-                    chkbStatus: data.status
-                })
-                // console.log(this.state)
-            })
+            // callApi(`products/${id}`,'GET',null).then(res=>{
+            //     var data = res.data;
+            //     // console.log(data)
+            //     this.setState({
+            //         id : data.id,
+            //         txtName : data.name,
+            //         txtPrice:data.price,
+            //         chkbStatus: data.status
+            //     })
+            //     // console.log(this.state)
+            // })
+            this.props.onEditProduct(id)
+
         }
        
-       
+           
     }
+
+        componentWillReceiveProps(nextProps){
+            // console.log('vào')
+        if(nextProps && nextProps.itemEditing){
+            
+            var  {itemEditing} = nextProps
+            this.setState({
+                // id: nextProps.task.id,
+                // name: nextProps.task.name,
+                // status: nextProps.status
+                id : itemEditing.id,
+                txtName : itemEditing.name,
+                txtPrice:itemEditing.price,
+                chkbStatus: itemEditing.status 
+            })
+            }
+        }
+        // static getDerivedStateFromProps(props, state) {
+        //     if(props.itemEditing.id !== state.id){
+        //          return {
+        //         id : props.itemEditing.id,
+        //         txtName : props.itemEditing.name,
+        //         txtPrice:props.itemEditing.price,
+        //         chkbStatus: props.itemEditing.status 
+        //     }
+        //     }
+        //     return null
+        // }
+
+
   render(){
     var {txtName,txtPrice,chkbStatus,redirect} = this.state;
     if(redirect === true){
@@ -128,13 +164,26 @@ class ProductActionPage extends Component {
     
   }
 
+
+  const mapStateToProps = (state)=>{
+    return {
+        itemEditing : state.itemEditing
+    }
+  }
+
   const mapDispatchToProps=(dispatch,props)=>{
     return {
         onAddProduct : (product) =>{
             dispatch(actAddProductRequest(product))
+        },
+        onEditProduct:(id) =>{
+            dispatch(actGetProductRequest(id))
+        },
+        onUpdateProduct:(product)=>{
+            dispatch(actUpdateProductRequest(product))
         }
     }
   }
   
-  export default connect(null,mapDispatchToProps)(withParams(ProductActionPage));
+  export default connect(mapStateToProps,mapDispatchToProps)(withParams(ProductActionPage));
   
