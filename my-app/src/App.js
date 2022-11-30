@@ -11,7 +11,6 @@ import ProductActionPage from './pages/ProductActionPage/ProductActionPage';
 
 
 function App() {
-  var histoty = '222'
   return (
 
       <div className="App">  
@@ -21,7 +20,7 @@ function App() {
               <Route index element={<HomePage />} />
               <Route path='*' element = {<NotFound />} />
               <Route path='product'element={<ProductListPage />} />
-              <Route path='product/add'   element={<ProductActionPage histoty={histoty} />} />
+              <Route path='product/add'   element={<ProductActionPage />} />
               <Route path='product/:id/edit'element={<ProductActionPage />} />
             </Route>
           </Routes>

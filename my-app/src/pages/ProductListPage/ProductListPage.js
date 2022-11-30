@@ -3,7 +3,8 @@ import ProductList from '../../components/ProductList/ProductList';
 import ProductItem from '../../components/ProductItem/ProductItem';
 import { Link } from 'react-router-dom';
 import {connect} from "react-redux";
-import callApi from '../../utils/apiCaller';
+// import callApi from '../../utils/apiCaller';
+import {actDeleteProductRequest, actFetchProductsRequest} from '../../actions/index'
 
 
 class ProductListPage extends Component {
@@ -27,18 +28,54 @@ class ProductListPage extends Component {
         // }).catch(err =>{
         //     console.log(err)
         // })
-        callApi('products','GET',null).then(res=>{
-            this.setState({
-                products : res.data
-            })
-        })
+
+        // ----------------
+        // callApi('products','GET',null).then(res=>{
+        //     // this.setState({
+        //     //     products : res.data
+        //     // })
+        //     // console.log(res)
+        //     this.props.fetchAllProducts(res.data)
+        // })
+
+        this.props.fetchAllProducts()
     }
 
-    render(){
-        // var {products} = this.props;
+    onDelete=(id)=>{
+        // var products = this.state.products;
         // console.log(products)
-        var products = this.state.products;
-        
+        // callApi(`products/${id}`,'DELETE',null).then(res=>{
+        //     if(res.status===200){
+        //         var index = this.findIndex(products,id);
+        //         if(index !== -1){
+        //             products.splice(index,1)
+        //             this.setState({
+        //                 products : products
+        //             })
+        //         }
+                
+        //     }
+        // })
+        this.props.onDeleteProduct(id)
+
+    }
+
+    // findIndex(products,id){
+    //     var result = -1;
+    //     for( let i = 0; 1<products.length;i++){
+    //        if(products[i].id === id){
+    //          result = i;
+    //          return result
+    //        }
+    //     }
+    //     return result
+    // }
+
+    render(){
+        var {products} = this.props;
+      
+        // var products = this.state.products;
+        // console.log(products)
         
         return (
             <div className='container'>
@@ -59,7 +96,7 @@ class ProductListPage extends Component {
         if(products.length>0){
             result = products.map((product,index) => {
                 return (
-                    <ProductItem key={index} product={product} index={index} />
+                    <ProductItem key={index} product={product} index={index} onDelete={this.onDelete} />
                 )
             });
         }
@@ -70,8 +107,20 @@ class ProductListPage extends Component {
 
 const mapStateToProps = (state)=>{
     return {
+        
         products : state.products
     }
 }
+const mapDispatchToProps = (dispatch,props)=>{
+    return {
+        fetchAllProducts: ()=>{
+            dispatch(actFetchProductsRequest());
+        },
+        onDeleteProduct:(id)=>{
+            dispatch(actDeleteProductRequest(id))
+        }
+    }
+}
 
-export default connect(mapStateToProps,null) (ProductListPage);
+
+export default connect(mapStateToProps,mapDispatchToProps) (ProductListPage);

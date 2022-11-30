@@ -1,7 +1,14 @@
 import { Component } from "react";
 import callApi from "../../utils/apiCaller";
+import { Link, Navigate,useParams   } from 'react-router-dom';
+import {connect} from 'react-redux'
+import { actAddProductRequest } from "../../actions";
 
 
+
+function withParams(Component) {
+    return props => <Component {...props} params={useParams()} />;
+  }
 
 class ProductActionPage extends Component {
 
@@ -11,7 +18,8 @@ class ProductActionPage extends Component {
             id: '',
             txtName : '',
             txtPrice:'',
-            chkbStatus: false
+            chkbStatus: false,
+            redirect : false
         }
     }
 
@@ -24,21 +32,66 @@ class ProductActionPage extends Component {
         })
     }
     onSave=(e)=>{
-        var {txtName,txtPrice,chkbStatus}= this.state;
-        e.preventDefault();
-        console.log(this.props.histoty)
-        callApi('products','POST',{
-            name: txtName,
-            price: txtPrice,
+        var {txtName,txtPrice,chkbStatus,id}= this.state;
+        var product = {
+            id : id,
+            name :txtName,
+            price :txtPrice,
             status: chkbStatus
-        }).then(res=>{
-        })
+        }
+        e.preventDefault();
+        if(id===''){
+            // callApi('products','POST',{
+            //     name: txtName,
+            //     price: txtPrice,
+            //     status: chkbStatus
+            // }).then(res=>{
+            //     this.setState({
+            //         redirect : true
+            //     })
+            // })
+                this.setState({
+                redirect : true
+            })
+            this.props.onAddProduct(product)
+        }else{
+            callApi(`products/${id}`,'PUT',{
+                id: id,
+                name: txtName,
+                price: txtPrice,
+                status: chkbStatus
+            }).then(res=>{
+                this.setState({
+                    redirect : true
+                })
+            })
+        }
+       
     }
 
-
+    componentDidMount() {
+        let { id } = this.props.params;
+        if(id){
+            callApi(`products/${id}`,'GET',null).then(res=>{
+                var data = res.data;
+                // console.log(data)
+                this.setState({
+                    id : data.id,
+                    txtName : data.name,
+                    txtPrice:data.price,
+                    chkbStatus: data.status
+                })
+                // console.log(this.state)
+            })
+        }
+       
+       
+    }
   render(){
-
-    var {txtName,txtPrice,chkbStatus} = this.state;
+    var {txtName,txtPrice,chkbStatus,redirect} = this.state;
+    if(redirect === true){
+       return <Navigate to="/product" replace={true} />
+    }
 
     return (
        <div className="container">
@@ -56,12 +109,13 @@ class ProductActionPage extends Component {
                     <div className="form-group">
                         <div className="checkbox">
                             <label>
-                                <input type="checkbox" name="chkbStatus" value={chkbStatus} onChange={this.onChange}/>
+                                <input type="checkbox" name="chkbStatus" value={chkbStatus} checked={chkbStatus} onChange={this.onChange}/>
                                 Trạng thái
                             </label>
                         </div>
                         
                     </div>
+                    <Link to='/product' className="btn btn-danger mr-10">Trở lại</Link>
                     <button type="submit" className="btn btn-primary">Lưu lại</button>
                 </form>
             
@@ -73,6 +127,14 @@ class ProductActionPage extends Component {
      }
     
   }
+
+  const mapDispatchToProps=(dispatch,props)=>{
+    return {
+        onAddProduct : (product) =>{
+            dispatch(actAddProductRequest(product))
+        }
+    }
+  }
   
-  export default ProductActionPage;
+  export default connect(null,mapDispatchToProps)(withParams(ProductActionPage));
   
